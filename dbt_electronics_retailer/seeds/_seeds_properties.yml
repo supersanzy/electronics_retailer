@@ -1,0 +1,70 @@
+seeds:
+  - name: Exchange_Rates
+    description: Details of the exchange rates for the electronics company
+
+    columns:
+      - name: Date
+        description: The date of the currency rate
+
+      - name: Currency
+        description: The currency based on the customers country
+
+      - name: Exchange
+        description: Exchange rate compared to USD
+
+
+  - name: Products
+    description: Details of the products in the company
+
+    columns:
+      - name: ProductKey
+        description: Primary key to identify products
+
+      - name: ProductName
+        description: Each row identifies the product name
+
+      - name: Brand
+        description: Contains the product brand
+
+      - name: Color
+        description: Contains the color of each product
+
+      - name: UnitCostUSD
+        description: The cost to produce the product in USD
+
+      - name: UnitPriceUSD
+        description: The list price of each product in USD
+
+      - name: SubcategoryKey
+        description: Key to identify product subcategories
+
+      - name: Subcategory
+        description: Product subcategory name
+
+      - name: CategoryKey
+        description: Key to identify product categories
+
+      - name: Category
+        description: Contains product category name
+
+  - name: Stores
+    description: This contains the details of where the company stores are located
+
+    columns:
+      - name: StoreKey
+        description: Primary key to identify stores
+
+      - name: Country
+        description: Contains the country where the stores are located
+
+      - name: State
+        description: Contains the state of the country where the stores are located
+
+      - name: SquareMeters
+        description: Store footprint in square meters
+
+      - name: OpenDate
+        description: Store open date
+
+
+

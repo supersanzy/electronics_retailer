@@ -1,0 +1,8 @@
+
+target/
+dbt_packages/
+logs/
+.env
+electronics_retailer/.venv/
+electronics_retailer/logs/
+electronics_retailer/.python-version

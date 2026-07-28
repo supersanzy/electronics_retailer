@@ -1,0 +1,73 @@
+sources:
+  - name: electronics_src
+    database: dev_db
+    schema: staging
+    loader: snowflake_stage
+
+
+    tables:
+      - name: customers
+        description: One row per customer. This shows the data of the customers
+
+        columns: 
+          - name: CustomerKey
+            description: Unique Key for each customer 
+
+          - name: Gender
+            description: The gender of each customer
+
+          - name: Name
+            description: Full name of each customers
+
+          - name: City
+            description: The city of each customer
+
+          - name: StateCode
+            description: Customer state, the abbreviated version
+
+          - name: State
+            description: The full state name of each customer
+
+          - name: ZipCode
+            description: Zip code of each customer state
+
+          - name: Country
+            description: Country of each customer
+
+          - name: Continent
+            description: Customer continent
+
+          - name: Birthday
+            description: Eaach row contains the date of birth of a customer 
+
+      
+      - name: sales
+        description: One row contains information of one order line
+
+        columns:
+          - name: OrderNumber
+            description: This contains a Unique ID for each order
+
+          - name: LineItem
+            description: Identifies individual products purchased as part of an order
+
+          - name: OrderDate
+            description: Date the order was placed
+
+          - name: DeliveryDate
+            description: Date the order was delivered
+
+          - name: CustomerKey
+            description: Unique key that identifies which customer placed the order
+
+          - name: StoreKey
+            description: Unique key that identifies which store processed the order
+
+          - name: ProductKey
+            description: Unique key that identifies which product was purchased
+
+          - name: Quantity
+            description: Number of items a customer purchased
+
+          - name: CurrencyCode
+            description: The currency used to process each order
