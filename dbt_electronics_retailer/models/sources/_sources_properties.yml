@@ -1,5 +1,5 @@
 sources:
-  - name: electronics_src
+  - name: electronics_retail_src
     database: dev_db
     schema: staging
     loader: snowflake_stage
@@ -71,3 +71,26 @@ sources:
 
           - name: CurrencyCode
             description: The currency used to process each order
+
+      - name: products
+        description: Details of the products in the company
+
+        columns:
+        - name: ProductKey
+          description: Primary key to identify products
+
+        - name: ProductName
+          description: Each row identifies the product name
+
+        - name: Brand
+          description: Contains the product brand
+
+        - name: Color
+          description: Contains the color of each product
+
+        - name: UnitCostUSD
+          description: The cost to produce the product in USD
+
+        - name: UnitPriceUSD
+          description: The list price of each product in USD
+  

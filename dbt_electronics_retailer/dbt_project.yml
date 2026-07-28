@@ -34,13 +34,16 @@ models:
     # Config indicated by + and applies to all files under models/example/
     bronze_layer:
       +materialized: ephemeral
+      
 
     silver_layer:
       +materialized: view
+      +schema: silver
 
     gold_layer:
       +materialized: table
+      +schema: gold
 
 seeds:
   dbt_electronics_retailer:
-    +schema: seed_data
+    +schema: seeds

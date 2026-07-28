@@ -13,38 +13,23 @@ seeds:
         description: Exchange rate compared to USD
 
 
-  - name: Products
-    description: Details of the products in the company
+  - name: Products_Category
+    description: ...
 
     columns:
-      - name: ProductKey
-        description: Primary key to identify products
+      - name: PRODUCTKEY
+        description: Primary key to identify products in the category table
 
-      - name: ProductName
-        description: Each row identifies the product name
-
-      - name: Brand
-        description: Contains the product brand
-
-      - name: Color
-        description: Contains the color of each product
-
-      - name: UnitCostUSD
-        description: The cost to produce the product in USD
-
-      - name: UnitPriceUSD
-        description: The list price of each product in USD
-
-      - name: SubcategoryKey
+      - name: SUBCATEGORYKEY
         description: Key to identify product subcategories
 
-      - name: Subcategory
+      - name: SUBCATEGORY
         description: Product subcategory name
 
-      - name: CategoryKey
+      - name: CATEGORYKEY
         description: Key to identify product categories
 
-      - name: Category
+      - name: CATEGORY
         description: Contains product category name
 
   - name: Stores
