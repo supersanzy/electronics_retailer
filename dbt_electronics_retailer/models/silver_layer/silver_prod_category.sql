@@ -2,7 +2,7 @@ with prod_category as
 (
     select 
         distinct CATEGORYKEY as product_category_key,
-        CATEGORY as product_category
+        {{clean_strings('CATEGORY')}} as product_category
     FROM {{ ref("bronze_prod_category") }}
 )
 

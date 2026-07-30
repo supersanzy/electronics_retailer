@@ -7,7 +7,7 @@ sources:
 
     tables:
       - name: customers
-        description: One row per customer. This shows the data of the customers
+        description: One row per customer. This shows the details of the customers
 
         columns: 
           - name: CustomerKey
@@ -17,7 +17,7 @@ sources:
             description: The gender of each customer
 
           - name: Name
-            description: Full name of each customers
+            description: Full name of each customer
 
           - name: City
             description: The city of each customer
@@ -55,7 +55,7 @@ sources:
             description: Date the order was placed
 
           - name: DeliveryDate
-            description: Date the order was delivered
+            description: Date an order was delivered
 
           - name: CustomerKey
             description: Unique key that identifies which customer placed the order

@@ -89,18 +89,19 @@ models:
                 severity: warn
 
   - name: silver_products
-    description: Cleaned and transformed version of the products data from bronze layer.
+    description: >
+      Cleaned, standardized and validated version of the products data from bronze layer for downstream analytics
     
     columns:
       - name: product_key
         description: This column is the value corresponding to PRODUCTKEY column from bronze layer.
         data_tests:
           - unique:
-              description: Checks the uniqueness of the product key column and stores duplicated keys.
+              description: Ensures every product has a unique identifier.
               config:
                 severity: error
           - not_null:
-              description: This checks that product key can never be null.
+              description: Gaurantees that product key can never be null.
               config:
                 severity: error
 
@@ -108,7 +109,7 @@ models:
         description: This column is the value corresponding to PRODUCTNAME column from bronze layer.
         data_tests:
           - not_null:
-              description: This checks that product name can't be null.
+              description: Validates that every product has a name
               config:
                 severity: error
           
@@ -116,65 +117,66 @@ models:
         description: This column is the value corresponding to BRAND column from bronze layer.
         data_tests:
           - not_null:
-              description: Every product must have a brand. This checks that this column can't be null
+              description: Every product must have a brand. This test ensures that this column can't be null
               config: 
                 severity: error
 
       - name: color
-        description: Placeholder
+        description: >
+            The colors of each product. This column is the corresponding value to the Color column from bronze layer.
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Verifies that this column is not null as each product should have a color.
               config:
                 severity: warn
 
       - name: unit_cost_usd
-        description: Placeholder
+        description: Standardized version of this column and transformed to int data type.
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Confirms that this column should never be null
               config:
                 severity: error
           
       - name: unit_price_usd
-        description: Placeholder
+        description: Standardized version of this column and transformed to int data type.
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Ensures every product has a unit price in usd.
               config:
                 severity: error
 
       - name: product_category_key
-        description: Placeholder
+        description: Product category in the products model.
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Validates that this column is not null.
               config:
                 severity: error
 
       - name: sub_category_key
-        description: Placeholder
+        description: Sub-Product category in the products model.
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Validates that this column is not null.
               config:
                 severity: warn
 
 
 
   - name: silver_stores
-    description: Cleaned and transformed version of the stores data from bronze layer.
+    description: Cleaned and transformed version of the stores data from bronze layer for downstream analytics.
 
     columns:
       - name: store_key
-        description: Placeholder
+        description: Unique identifier assigned to each store.
         data_tests: 
           - unique:
-              description: placeholder
+              description: Ensures each store has a unique identifier
               config:
                 severity: error
           - not_null:
-              description: Placeholder
+              description: Prevents this column from having null rows.
               config:
                 severity: error
 
@@ -184,76 +186,75 @@ models:
           cleaned via initcap(trim(...)). It stores the name of the country where the store is physically located.
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Validates that every store has a country.
               config:
                 severity: error
 
       - name: state
-        description: Placeholder
+        description: Recognizes the state where the stores are located
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Ensures that the column is not null as stores should have locations.
               config:
                 severity: error
 
       - name: square_meters
-        description: Placeholder
-        data_tests:
-          - not_null:
-              descriptionL: Placeholder
-              config:
-                severity: warn
+        description: This column depicts the size of the each store.
+ 
 
       - name: open_date
-        description: Placeholder
+        description: >
+            This column is the value corresponding to the OpenDate column from the bronze layer. 
+            Stores the date when the each store opened
         data_tests:
           - not_null:
-              description: Placeholder
+              description: To preserve history, this test ensures every store has an open date.
               config:
                 severity: error
 
 
   - name: silver_prod_category
-    description: Placeholder
+    description: Deduplicated and standardized category information for the product model.
 
     columns:
       - name: product_category_key
-        description: Placeholder
+        description: De-duplicated Product category of each product.
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Ensures that every product has a product-category
               config:
                 severity: error
           - unique:
-              description: Placeholder
+              description: Guarantees that every product category has a unique identifier
               config:
                 severity: error
 
       - name: product_category
-        description: Placeholder
+        description: Each row belongs to a product. This model is standardized and unique.
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Detects and also prevents null values in this column
               config:
                 severity: error
 
   - name: silver_sub_category
-    description: Placeholder
+    description: >
+        Deduplicated and standardized sub-category information for the product-category model for proper reference
 
     columns:
       - name: sub_category_key
-        description: Placeholder
+        description: De-duplicates the column to be standardized for proper reference
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Ensures that this column is not null
               config:
                 severity: warn
 
       - name: sub_catgeory
-        description: Placeholder
+        description: Cleaned and standardized sub-category names
         data_tests:
           - not_null:
-              description: Placeholder
+              description: Prevents this column from having empty rows
               config:
                 severity: warn
 
