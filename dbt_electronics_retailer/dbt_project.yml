@@ -35,7 +35,6 @@ models:
     bronze_layer:
       +materialized: ephemeral
       
-
     silver_layer:
       +materialized: view
       +schema: silver
@@ -47,3 +46,8 @@ models:
 seeds:
   dbt_electronics_retailer:
     +schema: seeds
+
+data_tests:
+  dbt_electronics_retailer:
+    +schema: failed_records
+    +store_failures: true

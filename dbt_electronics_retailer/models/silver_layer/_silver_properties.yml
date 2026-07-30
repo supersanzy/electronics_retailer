@@ -1,0 +1,262 @@
+models:
+  - name: silver_customers
+    description: Cleaned and transformed version of the customers data from bronze layer.
+
+    columns:
+      - name: customer_key
+        description: >
+          This is the primary key of the silver_customers table, sourced from the CustomerKey column in the bronze layer. 
+          Each value corresponds to one distinct customer entity.
+        data_tests:
+          - not_null:
+              description: This checks that customer key can never be null.
+              config:
+                severity: error
+          - unique:
+              description: Unique validates the customer key to always be unique and stores failed tests
+              config:
+                severity: error
+
+
+      - name: gender
+        description: This column is the value corresponding to Gender column from bronze layer.
+        data_tests:
+          - not_null:
+              description: Checks that the gender column can never be null.
+              config:
+                severity: warn
+          - accepted_values:
+              description: Accepted values in this gender column are Female and Male.
+              arguments:
+                values: ['Female', 'Male']
+              config: 
+                severity: warn
+
+      - name: customer_name
+        description: This column is the value corresponding to Name column from bronze layer.
+        data_tests:
+          - not_null:
+              description: Customer must have a name.
+              config:
+                severity: error
+
+      - name: city
+        description: This column is the value corresponding to City column from bronze layer.
+        data_tests:
+          - not_null:
+              description: Customer city can never be null as orders needs a location.
+              config:
+                severity: error
+
+      - name: state_code
+        description: This column is the value corresponding to StateCode column from bronze layer.
+        data_tests:
+          - not_null:
+              description: State Code 
+              config:
+                severity: warn
+
+      - name: zip_code
+        description: This column is the value corresponding to ZipCode column from bronze layer.
+        data_tests:
+          - not_null: 
+              description: Zip code can't be null.
+              config:
+                severity: error
+
+      - name: country
+        description: This column is the value corresponding to ZipCode column from bronze layer.
+        data_tests:
+          - not_null:
+              description: This column can never be null as shipped products needs a destination
+              config:
+                severity: error
+
+      - name: continent
+        description: This column is the value corresponding to Continent column from bronze layer.
+        data_tests:
+          - not_null:
+              description: Even if this column is null, the severity is warn
+              config:
+                severity: warn
+
+      - name: birthday
+        description: This column is the value corresponding to Birthday column from bronze layer.
+        data_tests:
+          - not_null:
+              description: Birthday cannot be null
+              config:
+                severity: warn
+
+  - name: silver_products
+    description: Cleaned and transformed version of the products data from bronze layer.
+    
+    columns:
+      - name: product_key
+        description: This column is the value corresponding to PRODUCTKEY column from bronze layer.
+        data_tests:
+          - unique:
+              description: Checks the uniqueness of the product key column and stores duplicated keys.
+              config:
+                severity: error
+          - not_null:
+              description: This checks that product key can never be null.
+              config:
+                severity: error
+
+      - name: product_name
+        description: This column is the value corresponding to PRODUCTNAME column from bronze layer.
+        data_tests:
+          - not_null:
+              description: This checks that product name can't be null.
+              config:
+                severity: error
+          
+      - name: brand
+        description: This column is the value corresponding to BRAND column from bronze layer.
+        data_tests:
+          - not_null:
+              description: Every product must have a brand. This checks that this column can't be null
+              config: 
+                severity: error
+
+      - name: color
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: warn
+
+      - name: unit_cost_usd
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+          
+      - name: unit_price_usd
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: product_category_key
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: sub_category_key
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: warn
+
+
+
+  - name: silver_stores
+    description: Cleaned and transformed version of the stores data from bronze layer.
+
+    columns:
+      - name: store_key
+        description: Placeholder
+        data_tests: 
+          - unique:
+              description: placeholder
+              config:
+                severity: error
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: country
+        description: >
+          This column is the value corresponding to the Country column from the bronze layer, 
+          cleaned via initcap(trim(...)). It stores the name of the country where the store is physically located.
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: state
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: square_meters
+        description: Placeholder
+        data_tests:
+          - not_null:
+              descriptionL: Placeholder
+              config:
+                severity: warn
+
+      - name: open_date
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+
+  - name: silver_prod_category
+    description: Placeholder
+
+    columns:
+      - name: product_category_key
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+          - unique:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: product_category
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+  - name: silver_sub_category
+    description: Placeholder
+
+    columns:
+      - name: sub_category_key
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: warn
+
+      - name: sub_catgeory
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: warn
+
+
+
+

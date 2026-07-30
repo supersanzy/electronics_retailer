@@ -5,7 +5,9 @@ with products_data as
         Brand,
         Color,
         UnitCostUSD,
-        UnitPriceUSD
+        UnitPriceUSD,
+        SUBCATEGORYKEY,
+        CATEGORYKEY
     from {{ source('electronics_retail_src', 'products') }}
 )
 
