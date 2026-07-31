@@ -12,26 +12,6 @@ seeds:
       - name: Exchange
         description: Exchange rate compared to USD
 
-
-  - name: Products_Category
-    description: ...
-
-    columns:
-      - name: PRODUCTKEY
-        description: Primary key to identify products in the category table
-
-      - name: SUBCATEGORYKEY
-        description: Key to identify product subcategories
-
-      - name: SUBCATEGORY
-        description: Product subcategory name
-
-      - name: CATEGORYKEY
-        description: Key to identify product categories
-
-      - name: CATEGORY
-        description: Contains product category name
-
   - name: Stores
     description: This contains the details of where the company stores are located
 

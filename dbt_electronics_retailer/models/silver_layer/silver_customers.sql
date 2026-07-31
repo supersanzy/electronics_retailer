@@ -1,7 +1,7 @@
 with silver_customers_data as
 (
     select       
-        CustomerKey as customer_key,
+        CustomerKey as customer_id,
         {{clean_strings('Gender')}} as gender,
         {{clean_strings('Name')}} as customer_name,
         {{clean_strings('City')}} as city,

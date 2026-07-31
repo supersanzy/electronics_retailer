@@ -3,7 +3,7 @@ models:
     description: Cleaned and transformed version of the customers data from bronze layer.
 
     columns:
-      - name: customer_key
+      - name: customer_id
         description: >
           This is the primary key of the silver_customers table, sourced from the CustomerKey column in the bronze layer. 
           Each value corresponds to one distinct customer entity.
@@ -26,7 +26,7 @@ models:
               config:
                 severity: warn
           - accepted_values:
-              description: Accepted values in this gender column are Female and Male.
+              description: Validates that gender column contains only approved business values.
               arguments:
                 values: ['Female', 'Male']
               config: 
@@ -93,7 +93,7 @@ models:
       Cleaned, standardized and validated version of the products data from bronze layer for downstream analytics
     
     columns:
-      - name: product_key
+      - name: product_id
         description: This column is the value corresponding to PRODUCTKEY column from bronze layer.
         data_tests:
           - unique:
@@ -146,7 +146,7 @@ models:
               config:
                 severity: error
 
-      - name: product_category_key
+      - name: category_id
         description: Product category in the products model.
         data_tests:
           - not_null:
@@ -154,11 +154,27 @@ models:
               config:
                 severity: error
 
-      - name: sub_category_key
+      - name: category
+        description: Each row belongs to a product. This model is standardized and unique.
+        data_tests:
+          - not_null:
+              description: Detects and also prevents null values in this column
+              config:
+                severity: error
+
+      - name: sub_category_id
         description: Sub-Product category in the products model.
         data_tests:
           - not_null:
               description: Validates that this column is not null.
+              config:
+                severity: warn
+
+      - name: sub_category
+        description: Cleaned and standardized sub-category names
+        data_tests:
+          - not_null:
+              description: Prevents this column from having empty rows
               config:
                 severity: warn
 
@@ -168,7 +184,7 @@ models:
     description: Cleaned and transformed version of the stores data from bronze layer for downstream analytics.
 
     columns:
-      - name: store_key
+      - name: store_id
         description: Unique identifier assigned to each store.
         data_tests: 
           - unique:
@@ -212,51 +228,90 @@ models:
               config:
                 severity: error
 
+  - name: silver_sales_details
+    description: Placeholder
 
-  - name: silver_prod_category
-    description: Deduplicated and standardized category information for the product model.
-
-    columns:
-      - name: product_category_key
-        description: De-duplicated Product category of each product.
+    columns: 
+      - name: order_id
+        description: Unique identifier for orders placed by customers
         data_tests:
-          - not_null:
-              description: Ensures that every product has a product-category
-              config:
-                severity: error
           - unique:
-              description: Guarantees that every product category has a unique identifier
+              description: Placeholder
+              config:
+                severity: error
+          - not_null:
+              description: placeholder
               config:
                 severity: error
 
-      - name: product_category
-        description: Each row belongs to a product. This model is standardized and unique.
-        data_tests:
-          - not_null:
-              description: Detects and also prevents null values in this column
+      - name: line_item
+        description: Placeholder
+        data_tests: 
+          - not_null: 
+              description: Placeholder
               config:
                 severity: error
 
-  - name: silver_sub_category
-    description: >
-        Deduplicated and standardized sub-category information for the product-category model for proper reference
-
-    columns:
-      - name: sub_category_key
-        description: De-duplicates the column to be standardized for proper reference
+      - name: order_date
+        description: Placeholder
         data_tests:
           - not_null:
-              description: Ensures that this column is not null
+              description: placeholder
               config:
-                severity: warn
+                severity: error
 
-      - name: sub_catgeory
-        description: Cleaned and standardized sub-category names
+      - name: delivery_date
+        description: placeholder
         data_tests:
           - not_null:
-              description: Prevents this column from having empty rows
+              description: placeholder
               config:
-                severity: warn
+                severity: error
+            
+      - name: customer_id
+        description: placeholder
+        data_tests:
+          - not_null: 
+              description: placeholder
+              config:
+                severity: error
+        
+      - name: store_id
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: product_id
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: quantity
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      - name: currency_code
+        description: Placeholder
+        data_tests:
+          - not_null:
+              description: Placeholder
+              config:
+                severity: error
+
+      
+
+
+      
 
 
 

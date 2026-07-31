@@ -1,7 +1,7 @@
 with silver_stores_data as
 (
     select 
-        cast(StoreKey as int) as store_key,
+        cast(StoreKey as int) as store_id,
         {{clean_strings('Country')}} as country,
         {{clean_strings('State')}} as state,
         cast(SquareMeters as int) as square_meters,

@@ -94,9 +94,17 @@ sources:
         - name: UnitPriceUSD
           description: The list price of each product in USD
 
-        - name: SUBCATEGORYKEY
+        - name: CategoryKey
+          description: Key to identify product categories
+
+        - name: Category
+          description: Contains product category name
+
+        - name: Subcategory
+          description: Product subcategory name
+
+        - name: SubcategoryKey
           description: Key to identify product subcategories
 
-        - name: CATEGORYKEY
-          description: Key to identify product categories
+        
   

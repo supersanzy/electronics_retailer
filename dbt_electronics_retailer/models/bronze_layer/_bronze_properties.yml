@@ -1,0 +1,144 @@
+models:
+  - name: bronze_customers
+    description: >
+        This model ingests raw customer data from the source system without applying business transformations. 
+        It preserves the original structure for auditing and downstream processing.
+
+    columns:
+      - name: CustomerKey
+        description: Unique key identifier assigned to each customer.
+
+      - name: Gender
+        description: Identifies the gender of each customer.
+
+      - name: Name
+        description: Full name of each customer.
+
+      - name: City
+        description: Identifies the city each customer lives in.
+
+      - name: StateCode
+        description: Statecode of each customer.
+
+      - name: State
+        description: Ingests the state of each customer.
+
+      - name: ZipCode
+        description: Lands the zip code of each customer state.
+
+      - name: Country
+        description: Country where each customer resides in.
+
+      - name: Continent
+        description: Continent of each country.
+
+      - name: Birthday
+        description: Date of birth of each customer.
+
+  - name: bronze_products
+    description: Products data ingested from the source without business transformations.
+
+    columns:
+      - name: ProductKey
+        description: Unique identifier assigned to each product
+
+      - name: ProductName
+        description: Name of each product.
+
+      - name: Brand
+        description: Identifies the brand of the product.
+
+      - name: Color
+        description: Color of each product.
+
+      - name: UnitCostUSD
+        description: Specifies the cost to produce each product in USD.
+
+      - name: UnitPriceUSD
+        description: Specifies the list price of each product in USD.
+
+      - name: CategoryKey
+        description: Unique identifier of the products category.
+
+      - name: Category
+        description: Placeholder
+
+      - name: SubcategoryKey
+        description: Identifies the sub category of the products category. This column is not unique.
+
+      - name: Subcategory
+        description: Placeholder
+
+  - name: bronze_sales
+    description: Raw sales transactions ingested from the source and unmodified.
+
+    columns:
+      - name: OrderNumber
+        description: Unique Identifier for each order
+
+      - name: LineItem
+        description: >
+            One row contains information of one order line. 
+            This means that each row represents a single product line within an order. 
+
+      - name: OrderDate
+        description: The date when an order was placed by the customer.
+
+      - name: DeliveryDate
+        description: Tracks when the order was fulfilled. 
+
+      - name: CustomerKey
+        description: >
+            Unique identifier for the customer that initialized the transaction 
+            and a foreign key to the source Customers table
+
+      - name: StoreKey
+        description: >
+            Identifies the ID of the store that the order was placed on. 
+            Also a foreign key to the source Stores table
+
+      - name: ProductKey
+        description: > 
+            Unique identifier for the product the customer ordered for.
+            Also a foreign key to the source Products table
+
+      - name: Quantity
+        description: Specifies the quantity of the product the customer ordered.
+
+      - name: CurrencyCode
+        description: Identifies the currency used to process the order.
+
+  - name: bronze_stores
+    description: >
+        Original stores data ingested from the source to the bronze layer
+        without business transformations. The source is from seeds.
+    columns:
+      - name: StoreKey
+        description: Unique identifier for each store
+
+      - name: Country
+        description: Identifies the country where each store is located.
+
+      - name: State
+        description: Identifies the state where each store is located.
+
+      - name: SquareMeters
+        description: Store footprint in square meters
+
+      - name: OpenDate
+        description: Identifies the date when each store opened.
+
+  - name: bronze_exchange_rates
+    description: This model ingests exchange rates data from the source system. The source is from seeds.
+
+    columns:
+      - name: Date
+        description: Exchange rates date.
+
+      - name: Currency
+        description: Specifies the currency code.
+
+      - name: Exchange
+        description: Identifies the rates of each currency code.
+
+
