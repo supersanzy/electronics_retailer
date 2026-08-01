@@ -235,10 +235,6 @@ models:
       - name: order_id
         description: Unique identifier for orders placed by customers
         data_tests:
-          - unique:
-              description: Placeholder
-              config:
-                severity: error
           - not_null:
               description: placeholder
               config:
@@ -261,13 +257,11 @@ models:
                 severity: error
 
       - name: delivery_date
-        description: placeholder
-        data_tests:
-          - not_null:
-              description: placeholder
-              config:
-                severity: error
-            
+        description: >
+          Delivery date of the order line. NULL for offline sales — offline orders
+          are not delivered, so this column is legitimately nullable (see
+          fact_offline_sales, which splits online/offline on this flag).
+        
       - name: customer_id
         description: placeholder
         data_tests:

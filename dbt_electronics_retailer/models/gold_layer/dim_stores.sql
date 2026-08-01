@@ -1,5 +1,5 @@
 select 
-    row_number() over(order by store_id) as store_key,
+    {{ dbt_utils.generate_surrogate_key(['store_id'])}} as store_key,
     store_id,
     {{case_flag('store_id')}} as enriched_store,
     country,

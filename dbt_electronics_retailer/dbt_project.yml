@@ -51,3 +51,5 @@ data_tests:
   dbt_electronics_retailer:
     +schema: failed_records
     +store_failures: true
+
+

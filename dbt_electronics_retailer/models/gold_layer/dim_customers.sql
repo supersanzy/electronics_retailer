@@ -1,5 +1,6 @@
 select 
-    row_number() over(order by customer_id) as customer_key,
+    {{ dbt_utils.generate_surrogate_key(['customer_id'])}} as customer_key,
+    {# md5(cast(customer_id as varchar)) as customer_key, #}
     customer_id,
     customer_name,
     gender,
