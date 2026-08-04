@@ -1,16 +1,18 @@
 seeds:
   - name: Exchange_Rates
-    description: Details of the exchange rates for the electronics company
+    description: >
+      Reference dataset containing historical currency exchange rates used to convert 
+      monetary values into a common reporting currency.
 
     columns:
       - name: Date
-        description: The date of the currency rate
+        description: Date on which the exchange rate is effective.
 
       - name: Currency
-        description: The currency based on the customers country
+        description: Currency code for which the exchange rate is recorded.
 
       - name: Exchange
-        description: Exchange rate compared to USD
+        description: Exchange rate relative to the U.S. dollar (USD).
 
   - name: Stores
     description: This contains the details of where the company stores are located

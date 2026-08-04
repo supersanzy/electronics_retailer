@@ -1,0 +1,584 @@
+models:
+  - name: dim_customers
+    description: >
+      Customer dimension containing one record per customer for analytical reporting. 
+      The model assigns a stable surrogate key while preserving the original business key for traceability and downstream joins.
+
+    columns: 
+      - name: customer_key
+        description: >
+          Stable surrogate key generated from customer_id using dbt_utils.generate_surrogate_key. 
+          Used as the primary join key between dimension and fact tables while remaining independent of the business key.
+        data_tests:
+          - not_null:
+              description: >
+                Ensures every customer record is assigned a surrogate key for reliable joins with downstream fact tables.
+              config:
+                severity: error
+          - unique:
+              description: >
+                Confirms that each surrogate key uniquely identifies a single customer record within the dimension.
+              config:
+                severity: error
+  
+      - name: customer_id
+        description: > 
+          Original business identifier for the customer retained for traceability and source system reconciliation.
+        data_tests:
+          - not_null:
+              description: >
+                Verifies that every customer record contains its original business identifier.
+              config:
+                severity: error
+
+      - name: customer_name
+        description: >
+          Customer's full name inherited from the silver layer after data cleansing and text standardization.
+        data_tests:
+          - not_null:
+              description: >
+                Confirms that every customer record includes a populated customer name.
+              config:
+                severity: error
+
+      - name: gender
+        description: Standardized gender value describing the customer for demographic analysis.
+        data_tests:
+          - not_null:
+              description: >
+                Checks that customer gender is available for demographic reporting. 
+                Missing values generate a warning rather than failing the pipeline.
+              config:
+                severity: warn
+          - accepted_values:
+              arguments:
+                values: ['Female', 'Male']
+              config:
+                severity: error
+              description: Validates that gender column contains only approved business values.
+
+      - name: country
+        description: Country where the customer resides, used for geographic reporting and segmentation.
+        data_tests:
+          - not_null:
+              description: Ensures each customer is associated with a country for geographic analysis.
+              config:
+                severity: error
+
+      - name: city
+        description: City where the customer resides after text normalization in the silver layer.
+        data_tests:
+          - not_null:
+              description:  Validates that every customer record includes a city value.
+              config:
+                severity: error
+
+      - name: state
+        description: Full state or province name associated with the customer's residence.
+        data_tests:
+          - not_null:
+              description:  Confirms that each customer record contains a valid state or province.
+              config:
+                severity: error
+
+      - name: birthday
+        description: >
+          Customer date of birth used for age-based reporting and demographic analysis.
+        data_tests:
+          - not_null:
+              description: >
+                Checks whether customer birth dates are available for age-based analysis.
+                Missing values generate a warning because they may not always be supplied by the source system.
+              config:
+                severity: warn
+
+  - name: dim_products
+    description: >
+      Product dimension containing one record per product for analytical reporting.
+      The model assigns a stable surrogate key while preserving the original product identifier 
+      and descriptive product attributes for downstream analysis.
+
+    columns:
+      - name: product_key
+        description: >
+          Stable surrogate key generated from product_id usingdbt_utils.generate_surrogate_key. 
+          sed as the primary join key between dimension and fact tables.
+        data_tests:
+          - not_null:
+              description: >
+                Ensures every product record is assigned a surrogate key for reliable joins
+                with downstream fact tables.
+              config:
+                severity: error
+          - unique:
+              description: >
+                Confirms that each surrogate key uniquely identifies a single product record within the dimension.
+              config:
+                severity: error
+
+      - name: product_id
+        description: >
+          Original business identifier for the product retained for traceability and reconciliation with the source system.
+        data_tests:
+          - not_null:
+              description: Verifies that every product record retains its original business identifier.
+              config:
+                severity: error
+
+      - name: product_name
+        description: >
+          Descriptive name of the product inherited from the silver layer after data cleansing and text standardization.
+        data_tests:
+          - not_null:
+              description: Confirms that every product record includes a populated product name.
+              config:
+                severity: error
+
+      - name: brand
+        description: Brand associated with the product after standardization in the silver layer.
+        data_tests:
+          - not_null:
+              description: Ensures every product is associated with a brand for reporting and analysis.
+              config:
+                severity: error
+
+      - name: color
+        description: Standardized color attribute describing the product.
+        data_tests:
+          - not_null:
+              description: Validates that every product record contains a color attribute.
+              config: 
+                severity: error
+
+      - name: unit_cost_usd
+        description: Cost of a single product unit expressed as a numeric value in U.S. dollars.
+        data_tests:
+          - not_null:
+              description: Ensures that the unit cost is available for every product record.
+              config:   
+                severity: error
+
+      - name: unit_price_usd
+        description: Selling price of a single product unit expressed as a numeric value in U.S. dollars.
+        data_tests:
+          - not_null:
+              description: Ensures that the selling price is available for every product record.
+              config:
+                severity: error
+
+      - name: category_id
+        description: Business identifier representing the product category.
+        data_tests:
+          - not_null:
+              description: Verifies that every product is assigned to a valid product category.
+              config:
+                severity: error
+
+      - name: category
+        description: Descriptive category to which the product belongs.
+        data_tests: 
+          - not_null:
+              description: Confirms that each product includes a descriptive category name.
+              config:
+                severity: error
+
+      - name: sub_category_id
+        description: Business identifier representing the product subcategory.
+        data_tests: 
+          - not_null:
+              description: Ensures that every product is associated with a valid product subcategory identifier.
+              config:
+                severity: error
+              
+
+      - name: sub_category
+        description: Descriptive subcategory to which the product belongs.
+        data_tests:
+          - not_null:
+              description: Confirms that each product includes a descriptive subcategory name.
+              config:
+                severity: error
+
+  - name: dim_stores
+    description: >
+      Store dimension containing one record per store for analytical reporting.
+      The model assigns a stable surrogate key while preserving the original store identifier 
+      and descriptive location attributes for downstream analysis.
+
+    columns:
+      - name: store_key
+        description: >
+          Stable surrogate key generated from store_id using dbt_utils.generate_surrogate_key. 
+          Used as the primary join key between dimension and fact tables.
+        data_tests:
+          - not_null:
+              description: >
+                Ensures every store record is assigned a surrogate key for reliable joins with downstream fact tables.
+          - unique:
+              description: >
+                Confirms that each surrogate key uniquely identifies a single store record within the dimension.
+
+      - name: store_id
+        description: >
+          Original business identifier for the store retained for traceability and reconciliation with the source system.
+        data_tests:
+          - not_null:
+              description: Verifies that every store record retains its original business identifier.
+          - unique:
+              description: >
+                Confirms that each store identifier uniquely represents a single store within the dimension.
+
+      - name: derived_store
+        description: >
+          Store classification derived from the store identifier that distinguishes online stores from physical walk-in stores.
+        data_tests:
+          - not_null:
+              description: Ensures that every store is assigned a valid store classification.
+
+      - name: country
+        description: Country where the store is located.
+        data_tests:
+          - not_null:
+              description: Verifies that every store is associated with a country.
+        
+      - name: state
+        description: State or province where the store is located.
+        data_tests: 
+          - not_null:
+              description: Confirms that every store record includes a state or province.
+
+      - name: open_date
+        description: Date the store began operations, used for store lifecycle and operational analysis.
+        data_tests: 
+          - not_null:
+              description: Ensures that each store record includes the date the store began operations.
+
+
+  - name: dim_exchange_rates
+    description: >
+      Reference dimension containing historical currency exchange rates used to convert financial measures 
+      into a common reporting currency for analysis.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - date
+              - currency
+          description: Confirms that each currency has at most one exchange rate for a given effective date.
+                
+
+    columns:
+      - name: date
+        description: Date on which the exchange rate becomes effective.
+        data_tests:
+         - not_null:
+            description: Ensures that every exchange rate record includes an effective date.
+          
+
+      - name: currency
+        description: Currency code associated with the recorded exchange rate.
+        data_tests:
+          - not_null:
+              description: Ensures that every exchange rate record is associated with a valid currency code.
+          
+
+      - name: exchange_rates
+        description: Exchange rate relative to the U.S. dollar (USD) used for currency conversion and financial reporting.
+        data_tests:
+          - not_null:
+              description: Verifies that every exchange rate record contains a conversion value for downstream calculations.
+
+  
+  - name: fact_sales
+    description: >
+      Fact table containing sales transactions at the order-line level. Each record represents a single product 
+      purchased through the online and offline sales channel and is linked to customer, product, and store dimensions for
+      analytical reporting.
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - line_item
+          description: >
+            Confirms that each order contains only one record for a given line item,
+            ensuring the fact table maintains its intended order-line grain.
+            
+    columns:
+    - name: order_id
+      description: Business identifier representing the customer order.
+      data_tests:
+        - not_null:
+            description: Ensures every sales record belongs to a valid customer order.
+
+    - name: line_item
+      description: Sequential line number identifying an individual product within a customer order.
+      data_tests:
+        - not_null:
+            description: Verifies that every sales record identifies a specific order line.
+      
+    - name: product_key
+      description: Surrogate key referencing the associated product in the product dimension.
+      data_tests:
+        - not_null:
+            description: Ensures every online sales record references a product.
+        - relationships:
+            arguments:
+              to: ref('dim_products')
+              field: product_key
+            description: Verifies that every product key exists in the product dimension.
+            config:
+              severity: error
+
+    - name: customer_key
+      description: Surrogate key referencing the customer who placed the order.
+      data_tests: 
+        - not_null:
+            description: Ensures every online sales record references a customer.
+        - relationships:
+            arguments:
+              to: ref('dim_customers')
+              field: customer_key
+            description:  Verifies that every customer key exists in the customer dimension.
+            config:
+              severity: error
+
+    - name: store_key
+      description: Surrogate key referencing the online store associated with the transaction.
+      data_tests:
+        - not_null:
+            description: Ensures every online sales record references a store.
+        - relationships:
+            arguments:
+              to: ref('dim_stores')
+              field: store_key
+            description: Verifies that every store key exists in the store dimension.
+            config:
+              severity: error
+
+    - name: quantity
+      description: Number of product units purchased for the order line.
+      data_tests:
+        - not_null:
+            description: Confirms that the quantity sold is recorded for every order line.
+        - test_negative_values:
+            arguments:
+              column_name: quantity
+            description: Ensures that quantity is not equal to 0 or have negative values
+
+    - name: unit_cost_usd
+      description: Product unit cost of a single product in U.S Dollars.
+      data_tests:
+        - not_null:
+            description: Ensures that every online sales record includes the product selling price.
+        - test_negative_values:
+            arguments:
+              column_name: unit_cost_usd
+            description: Ensures that the price unit of a product is not less than or equal to 0 or have negative values.
+
+    - name: unit_price_usd
+      description: Selling price of a single product unit in U.S. dollars at the time of the transaction.
+      data_tests:
+        - not_null:
+            description: Ensures that every online sales record includes the product selling price.
+        - test_negative_values:
+            arguments:
+              column_name: unit_price_usd
+            description: Ensures that selling price of a product is not less than or equal to 0 or have negative values.
+
+    - name: order_date
+      description: Date on which the customer placed the order.
+      data_tests:
+        - not_null:
+            description: Confirms that every online sales transaction includes the order date.
+    
+    - name: delivery_date
+      description: Date on which the online order was delivered to the customer.
+
+
+    - name: currency_code
+      description: Currency code associated with the sales transaction.
+      data_tests:
+        - not_null:
+            description: Verifies that every online sales record includes the transaction currency.
+  
+  
+  
+  
+  - name: fact_offline_sales
+    description: >
+      Fact table containing offline sales transactions at the order-line level.
+      Each record represents a single product purchased in a physical store and is linked to customer,
+      product, and store dimensions for analytical reporting.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - line_item
+          description: >
+            Confirms that each order contains only one record for a given line item,
+            ensuring the fact table maintains its intended order-line grain.
+
+    columns:
+      - name: order_id
+        description: Business identifier representing the sales order.
+        data_tests: 
+          - not_null:
+              description: Ensures every sales record belongs to a valid customer order.
+
+      - name: line_item
+        description:  Sequential line number identifying an individual product within a sales order.
+        data_tests: 
+          - not_null:
+              description: Verifies that every sales record identifies a specific order line.
+
+      - name: order_date
+        description: Date on which the customer placed the order.
+        data_tests: 
+          - not_null:
+              description: Confirms that every offline sales transaction includes the order date.
+
+      - name: product_key
+        description: Surrogate key referencing the associated product in the product dimension.
+        data_tests: 
+          - not_null: 
+              description: Ensures every sales record references a product.
+
+
+      - name: customer_key
+        description: Surrogate key referencing the customer who placed the order.
+        data_tests: 
+          - not_null:
+              description: Ensures every sales record references a customer.
+
+
+      - name: store_key
+        description: Surrogate key referencing the physical store where the purchase occurred.
+        data_tests: 
+          - not_null:
+              description: Ensures every offline sales record references a physical store.
+
+
+      - name: quantity
+        description: Number of units purchased for the order line.
+        data_tests: 
+          - not_null:
+              description: Ensures that the quantity sold is recorded for every order line.
+          - test_negative_values:
+              arguments:
+                column_name: quantity
+              description: Ensures that quantity is not less than 1 or have negative values
+              config:
+                severity: error
+
+      - name: unit_price_usd
+        description: Selling price of a single product unit in U.S. dollars at the time of the transaction.
+        data_tests: 
+          - not_null:
+              description: Confirms that every sales record includes the product selling price.
+          - test_negative_values:
+              arguments:
+                column_name: unit_price_usd
+              description: Ensures that selling price of a product is not less than or equal to 0 or have negative values.
+              config:
+                severity: error
+
+      - name: currency_code
+        description: Currency code associated with the transaction.
+        data_tests: 
+          - not_null:
+              description: Ensures that every sales record includes the transaction currency.
+
+  
+  - name: fact_online_sales
+    description: >
+      Fact table containing online sales transactions at the order-line level. Each record represents a single product 
+      purchased through the online sales channel and is linked to customer, product, and store dimensions for
+      analytical reporting.
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - line_item
+          description: >
+            Confirms that each order contains only one record for a given line item,
+            ensuring the fact table maintains its intended order-line grain.
+            
+    columns:
+    - name: order_id
+      description: Business identifier representing the customer order.
+      data_tests:
+        - not_null:
+            description: Ensures every sales record belongs to a valid customer order.
+
+    - name: line_item
+      description: Sequential line number identifying an individual product within a customer order.
+      data_tests:
+        - not_null:
+            description: Verifies that every sales record identifies a specific order line.
+      
+    - name: product_key
+      description: Surrogate key referencing the associated product in the product dimension.
+      data_tests:
+        - not_null:
+            description: Ensures every online sales record references a product.
+
+
+    - name: customer_key
+      description: Surrogate key referencing the customer who placed the order.
+      data_tests: 
+        - not_null:
+            description: Ensures every online sales record references a customer.
+
+
+    - name: store_key
+      description: Surrogate key referencing the online store associated with the transaction.
+      data_tests:
+        - not_null:
+            description: Ensures every online sales record references a store.
+
+
+    - name: quantity
+      description: Number of product units purchased for the order line.
+      data_tests:
+        - not_null:
+            description: Confirms that the quantity sold is recorded for every order line.
+        - test_negative_values:
+            arguments:
+              column_name: quantity
+            description: Ensures that quantity is not equal to 0 or have negative values
+
+    - name: unit_price_usd
+      description: Selling price of a single product unit in U.S. dollars at the time of the transaction.
+      data_tests:
+        - not_null:
+            description: Ensures that every online sales record includes the product selling price.
+        - test_negative_values:
+            arguments:
+              column_name: unit_price_usd
+            description: Ensures that selling price of a product is not less than or equal to 0 or have negative values.
+
+    - name: order_date
+      description: Date on which the customer placed the order.
+      data_tests:
+        - not_null:
+            description: Confirms that every online sales transaction includes the order date.
+    
+    - name: delivery_date
+      description: Date on which the online order was delivered to the customer.
+
+
+    - name: currency_code
+      description: Currency code associated with the sales transaction.
+      data_tests:
+        - not_null:
+            description: Verifies that every online sales record includes the transaction currency.
+
+
+
+
+          

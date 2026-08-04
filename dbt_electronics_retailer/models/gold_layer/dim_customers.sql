@@ -6,6 +6,9 @@ select
     gender,
     country,
     city,
+    zip_code,
     state,
+    state_code,
+    continent,
     birthday
 from {{ ref('silver_customers') }}

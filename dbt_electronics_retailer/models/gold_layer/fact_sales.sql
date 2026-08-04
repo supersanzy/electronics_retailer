@@ -1,16 +1,20 @@
-{{
-  config(
-    materialized = 'view',
-    )
-}}
-
-with company_cost_metrics as
+with fact_sales as
 (
-    select
+    select sd.order_id, 
+        sd.line_item,
         p.product_key, 
+        c.customer_key, 
         s.store_key,
+        sd.quantity, 
+        p.unit_cost_usd,
         p.unit_price_usd,
-        p.unit_cost_usd
+        sd.order_date, 
+        sd.delivery_date,
+        sd.currency_code,
+        case 
+            when sd.delivery_date is not null then 'Online'
+            else 'Offline'
+        end as sales_channel
         
     from {{ ref('silver_sales_details') }} as sd
     left join {{ ref('dim_customers') }} as c
@@ -19,7 +23,6 @@ with company_cost_metrics as
     on s.store_id = sd.store_id
     left join {{ ref('dim_products') }} as p
     on p.product_id = sd.product_id
-    
 )
 
-select * from company_cost_metrics
+select * from fact_sales
