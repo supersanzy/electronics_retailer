@@ -1,0 +1,24 @@
+snapshots:
+  - name: customer_snapshot
+    description: Preserves customer historical data
+    relation: ref('customer_snapshot_source')
+    config:
+      unique_key: customer_id
+      strategy: check
+      check_cols: ['city', 'country', 'state']
+      hard_deletes: invalidate
+
+
+  - name: product_prices_snapshot
+    description: Preserves product prices historical data
+    relation: ref('product_snapshot_source')
+    config:
+      unique_key: product_id
+      strategy: check
+      check_cols: 
+        - unit_price_usd
+      hard_deletes: invalidate
+
+  
+
+

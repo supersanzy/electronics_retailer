@@ -1,0 +1,25 @@
+dbt_electronics_retailer:
+  target: dev
+  outputs:
+    dev:
+      account: "{{ env_var('SF_ACCOUNT') }}"
+      database: dev_db
+      password: "{{ env_var('SF_USER_PASSWORD') }}"
+      role: "{{ env_var('DBT_D_ROLE') }}"
+      schema: staging
+      threads: 4
+      type: snowflake
+      user: "{{ env_var('DBT_USER') }}"
+      warehouse: "{{ env_var('DBT_WH') }}"
+
+    prod:
+      account: "{{ env_var('SF_ACCOUNT') }}"
+      database: prod_db
+      password: "{{ env_var('SF_USER_PASSWORD') }}"
+      role: "{{ env_var('DBT_P_ROLE') }}"
+      schema: prod_analytics
+      threads: 8
+      type: snowflake
+      user: "{{ env_var('DBT_USER') }}"
+      warehouse: "{{ env_var('DBT_WH') }}"
+      
